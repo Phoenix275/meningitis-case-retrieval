@@ -1,0 +1,6 @@
+openai>=1.0.0
+faiss-cpu
+numpy
+streamlit
+biopython
+rouge-score
