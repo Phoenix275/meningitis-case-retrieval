@@ -66,6 +66,15 @@ python3 baseline.py             # keyword-search baseline for comparison
 python3 evaluate_summaries.py   # ROUGE scores
 ```
 
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+The test suite runs without an OpenAI key and checks corpus format, the alignment between `data.jsonl`, `metadata.json`, and `index.faiss`, nearest-neighbor behavior on the saved index, and the metric functions. GitHub Actions runs it on every push. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design and a breakdown of the evaluation.
+
 ## Limitations
 
 Precision@5 of 0.24 reflects a small corpus (50 PubMed records) and a strict gold standard where only a handful of PMIDs count as correct for each query. The index uses exact L2 search, which is fine at this scale but would need an approximate index to grow. Summaries are generated from abstracts rather than full text, so they inherit whatever the abstract omits. This is a research prototype, not a clinical tool, and nothing it outputs should inform patient care.

@@ -1,3 +1,4 @@
+from metrics import mean, precision_at_k
 from query_cases import find_similar_pmids
 
 # Define your five gold‐standard queries and their true PMIDs
@@ -9,15 +10,12 @@ gold = {
     "Patient with insidious onset ataxia and GFAP-IgG positive in CSF suggestive of autoimmune GFAP astrocytosis": {"40735311"}
 }
 
-def precision_at_5(predicted, truth):
-    return len(predicted & truth) / 5.0
-
 scores = []
 for profile, true_set in gold.items():
     preds, _ = find_similar_pmids(profile, k=5)
-    p5 = precision_at_5(set(preds), true_set)
+    p5 = precision_at_k(preds, true_set, k=5)
     print(f"Query: {profile}\n  Predicted: {preds}\n  Precision@5 = {p5:.2f}\n")
     scores.append(p5)
 
-avg = sum(scores) / len(scores)
+avg = mean(scores)
 print(f"Average precision@5 over {len(scores)} queries = {avg:.2f}")
